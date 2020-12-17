@@ -25,12 +25,12 @@ let point: { x: number; y: number } = {
   y: 20,
 };
 
-// function
+// function ( this adds annotation for the variable holding the function not the function itself)
 const logNumber: (i: number) => void = (i: number) => {
   console.log(i);
 };
 
-// whe to use annotations
+// WHEN TO USE ANNOTATIONS:
 
 // * when a fucntion returns the 'any' type and we need to clarify the value
 const json = '{"x": 10 , "y": 20}';
