@@ -34,19 +34,19 @@ const withNumbers = ArrayOfAnything<number>([1, 2, 3]);
 // Another example with functions declarations
 
 function printStrings(arr: string[]): void {
-  arr.forEach((x) => {
+  arr.forEach(x => {
     console.log(x);
   });
 }
 
 function printNumber(arr: number[]): void {
-  arr.forEach((x) => {
+  arr.forEach(x => {
     console.log(x);
   });
 }
 
 function printAnything<T>(arr: T[]): void {
-  arr.forEach((x) => {
+  arr.forEach(x => {
     console.log(x);
   });
 }
@@ -98,7 +98,7 @@ const generateHouse = <T>(item: T): House => ({
 
 // this is the generic function that will print both cars and houses
 const printSomething = <T extends Printable>(arr: T[]) => {
-  arr.forEach((x) => {
+  arr.forEach(x => {
     x.print();
   });
 };
@@ -113,3 +113,60 @@ const houses = Array.from({ length: 3 }, (_, i) => generateHouse((i + 1) * 2));
 // remember to explictly give the type of the generic for clarity sake
 printSomething<Car>(cars);
 printSomething<House>(houses);
+
+const simpleState = <Value>(
+  initial: Value
+): [() => Value, (v: Value) => void] => {
+  let value: Value = initial;
+
+  return [
+    () => value,
+    (v: Value) => {
+      value = v;
+    },
+  ];
+};
+
+const [state1Getter, state1Setter] = simpleState(10);
+
+console.log(state1Getter());
+state1Setter(62);
+console.log(state1Getter());
+
+const [state2Getter, state2Setter] = simpleState<null | string>(null);
+
+console.log(state2Getter());
+state2Setter('🍌');
+console.log(state2Getter());
+
+interface Rank<RankItem> {
+  item: RankItem;
+  rank: number;
+}
+
+const ranker = <RankItem>(
+  items: RankItem[],
+  rank: (v: RankItem) => number
+): RankItem[] => {
+  const ranks: Rank<RankItem>[] = items.map(item => ({
+    item,
+    rank: rank(item),
+  }));
+
+  ranks.sort((a, b) => a.rank - b.rank);
+
+  return ranks.map(rank => rank.item);
+};
+
+interface Pokemon {
+  name: string;
+  hp: number;
+}
+
+const pokemons: Pokemon[] = [
+  { name: 'Bulbasaur', hp: 100 },
+  { name: 'Pikachu', hp: 80 },
+];
+
+const ranks = ranker(pokemons, ({ hp }) => hp);
+console.log(ranks);
