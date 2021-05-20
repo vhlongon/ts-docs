@@ -4,10 +4,6 @@ type MyFlexibleDogInfo = {
 };
 // or & Record<string, string | number>
 
-interface DogInfo {
-  name: string;
-  age: number;
-}
 
 const dog: MyFlexibleDogInfo = {
   name: 'Nick',
@@ -22,7 +18,13 @@ type OptionsFlags<Type> = {
 
 type DogInfoOptions = OptionsFlags<DogInfo>;
 
+interface DogInfo {
+  name: string;
+  age: number;
+}
+
 // we can map the types and even change the name on the fly!
+// this will create one onDelete and one onChange proprety for each property in the type 
 type Listeners<Type> = {
   [Property in keyof Type as `on${Capitalize<string & Property>}Change`]?: (
     v: Type[Property]
