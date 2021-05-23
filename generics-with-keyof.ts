@@ -18,14 +18,14 @@ interface BaseEvent {
   user: string;
 }
 
-interface EventMap {
+interface EventMap1 {
   addToCart: BaseEvent & { quantity: number; productID: string };
   checkout: BaseEvent & { total: number; userID: string };
 }
 
-const sendEvent = <Name extends keyof EventMap>(
+const sendEvent = <Name extends keyof EventMap1>(
   name: Name,
-  data: EventMap[Name]
+  data: EventMap1[Name]
 ): void => {
   console.log([name, data]);
 };
